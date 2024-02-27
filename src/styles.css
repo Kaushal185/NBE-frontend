@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+
+.header {
+  color: white;
+  background-color: rgba(0, 43, 116, 1);
+  height: 1px;
+  /* border-bottom-left-radius: -100px; */
+}
+
+
+body {
+  /* padding: 50px; */
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* html, body { height: 100%; } */
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.content{
+  flex: 1;
+}
+
+.footer {
+  /* margin-top: 100px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px; /* Set a height for the container, adjust as needed */
+  background-color: #e2e2e2; /* Optional background color */
+  width: 100%;
+  font-size: smaller;
+  /* Add any additional styles you want for the footer container */
+}

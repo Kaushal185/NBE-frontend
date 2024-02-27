@@ -1,0 +1,125 @@
+/* Add the same CSS styles here */
+.nav-scrolled img {
+  height: 30px;
+  width: auto;
+}
+
+.nav-fixed {
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  color: white;
+  background-color: rgba(0, 43, 116, 1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+}
+
+.nav-fixed img {
+  height: 50px;
+  width: auto;
+}
+
+.nav-fixed .left {
+  font-size: x-large;
+}
+
+.nav-fixed .right {
+  gap: 10px;
+  /* background-color: green; */
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav-fixed .right button {
+  background-color: rgba(0, 43, 116, 1);
+  border-radius: 5px 2px 5px 2px;
+  color: white;
+  border-color: rgb(201, 201, 201);
+  font-size: medium;
+  border-style: outset;
+  border-width: 1px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.nav-fixed .right button:hover {
+  background-color: rgb(0, 73, 199);
+}
+
+
+.back-image {
+  position:relative;
+  top: 0;
+  /* left: 0; */
+  /* width: 100%; */
+  /* height: 100%; */
+  z-index: -1;
+}
+
+.parent {
+  /* padding: 10px; */
+  width: 100%;
+  height: auto;
+  position: absolute;
+  /* background-color: green; */
+  /* height: 200%; */
+  /* background-image: url("/assets/bg-1.jpg"); */
+
+}
+
+.login-container {
+  margin: 80px auto;
+  background-color: rgba(00, 00, 00, 0.1);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  color: white;
+backdrop-filter: blur(50px);
+}
+
+.login-container label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-container button {
+  font-size: large;
+  background-color: rgba(0, 43, 116, 1);
+  color: #fff;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.login-container button:hover {
+  background-color:rgba(0, 73, 199);
+}
+
+.login-container p {
+  font-size: small;
+}
+
+.error-message {
+  text-align: center;
+  font-size: medium;
+  font-weight: bold;
+  color: #ff0000;
+  text-shadow: 0px 0px 15px black;
+}

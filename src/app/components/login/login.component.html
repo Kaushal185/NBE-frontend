@@ -1,0 +1,33 @@
+<nav class="nav-fixed">
+  <div class="left" routerLink="/application"><img src="assets/NBE-logo.svg" alt="NBE-logo" ></div>
+  <!-- <div ><span style="font-weight: bold; letter-spacing: 1px;">FAB</span>MISR</div> -->
+  <div class="right">
+    <button>ABOUT</button>
+    <button routerLink="/login">LOGIN</button>
+  </div>
+</nav>
+<div class="parent">
+  <div class="login-container">
+    <h2 style="text-align: center; color: rgb(254, 254, 254); font-size: xx-large; text-shadow: 0px 0px 15px black;">SIGN IN</h2>
+    <form (ngSubmit)="login()">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required [(ngModel)]="username">
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required [(ngModel)]="password">
+
+      <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <br>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div style="display: flex; justify-content: space-between;">
+      <p>Forgot Password</p>
+      <p>Register</p>
+    </div>
+  </div>
+</div>
+<div class="back-image">
+<img style="width: 100%;" src="assets/bg-1.jpg" alt="">
+</div>

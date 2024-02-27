@@ -1,0 +1,209 @@
+p {
+  background-color: #fff;
+  /* width: 100%; */
+  text-align: center;
+  /* align-self: stretch; */
+}
+
+.search button {
+  color: white;
+  border:none;
+  background-color: rgb(0, 180, 0);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.search button:hover {
+  background-color: rgb(0, 197, 0);
+}
+
+.search button:disabled {
+  background-color: #ccc; /* Change to your preferred disabled background color */
+  color: #666; /* Change to your preferred disabled text color */
+  cursor: not-allowed;
+}
+
+.sub-filters {
+  padding: 15px;
+  color: white;
+  margin: 30px auto;
+  width: 78.7%;
+  background-color: rgba(0, 43, 116, 1);
+  display: flex;
+  justify-content: space-between;
+  border-radius: 5px;
+  align-items: baseline;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+}
+
+option {
+  text-align: center;
+  font-weight: bold;
+}
+
+.filter-box {
+  color: white;
+  background-color: rgb(0, 73, 199);
+  display: flex;
+  border: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: rgb(0, 73, 199);
+
+  /* padding: 50px; */
+  justify-content: space-around;
+  /* width: auto; */
+  /* margin: 50px 0px 0px 147px; */
+}
+
+.filter-box .message-type {
+  cursor: pointer;
+  padding: 10px;
+  color: rgb(173, 171, 171);
+  background-color: rgba(0, 43, 116, 1);
+}
+
+.filter-box .message-type.selected {
+color: white;
+  background-color: rgb(0, 73, 199); /* Change to the desired color when selected */
+}
+
+.filter-box label {
+  cursor: pointer;
+  /* margin: 100px; */
+}
+
+.sub-filters input{
+  padding: 2px;
+  border-radius: 4px;
+
+}
+
+.sub-filters select {
+  padding: 2px;
+  border-radius: 4px;
+
+}
+
+.sub-filters button {
+  background-color: rgba(0, 43, 116, 1);
+  border-radius: 8px 2px 8px 2px;
+  color: white;
+  border-color: white;
+  font-weight: bold;
+  border-style:outset;
+  border-width: 1px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.sub-filters button:hover {
+  background-color: rgb(0, 73, 199);
+}
+
+.records {
+  width: 80%;
+  /* align-self: center; */
+  /* justify-self: center; */
+  /* max-height: 800px; */
+  overflow: auto;
+  /* background-color: rgba(0, 43, 116, 1); */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  padding: 1px;
+  margin: 30px auto;
+ }
+
+ .mat-mdc-row .mat-mdc-cell {
+   border-bottom: 1px solid transparent black;
+  border-top: 1px solid transparent;
+  /* cursor: pointer; */
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: black;
+}
+
+.records table button {
+  /* width: auto; */
+  /* padding: auto ; */
+  border-radius: 5px;
+  color: white;
+  background-color: rgba(0, 43, 116, 1);
+  cursor: pointer;
+  border: none;
+  font-size: x-small;
+  padding: 5px 8px;
+}
+
+.records table button:hover {
+  background-color: rgba(0, 73, 199);
+}
+
+.loading-container {
+  padding: 10px;
+  display: flex;
+  /* width: 80%; */
+  justify-content:center;
+  /* flex-direction: column; */
+  /* margin: auto; */
+}
+
+.loading-container .page-buttons {
+  font-size: small;
+  color: white;
+  border-radius: 8px;
+  margin-left:10px;
+  padding: 8px 15px;
+  background-color: rgba(0, 43, 116, 1);
+  cursor: pointer;
+
+}
+
+.loading-container .page-buttons:hover {
+  background-color: rgba(0, 73, 199);
+}
+
+.loading-container .page-number {
+  font-size: small;
+  color: white;
+  border-radius: 8px;
+  margin-left:10px;
+  padding: 8px 15px;
+  background-color: rgba(0, 43, 116, 1);
+}
+
+
+.loading-container button {
+  background-color: rgba(0, 43, 116, 1);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  /* width: 100%; */
+}
+
+.loading-container button:hover {
+  background-color: rgb(0, 197, 0);
+}
+
+.loading-container button:disabled {
+  background-color: #ccc; /* Change to your preferred disabled background color */
+  color: #666; /* Change to your preferred disabled text color */
+  cursor: not-allowed;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
