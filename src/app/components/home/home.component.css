@@ -148,7 +148,7 @@ color: white;
   padding: 10px;
   display: flex;
   /* width: 80%; */
-  justify-content:center;
+  justify-content:space-between;
   /* flex-direction: column; */
   /* margin: auto; */
 }

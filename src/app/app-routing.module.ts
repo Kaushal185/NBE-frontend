@@ -15,7 +15,8 @@ const routes: Routes = [
     path: "dashboard", component: NavBarComponent, children: [
       { path: "home", component: HomeComponent },
       { path: ":id/message", component: MessageComponent },
-    ], canActivate: [AuthGuard]
+    ]
+    // , canActivate: [AuthGuard]
   },
   // { path: "homeNew", component: HomeNewComponent },
   { path: "", redirectTo: "/application", pathMatch: 'full' },

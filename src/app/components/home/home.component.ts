@@ -40,6 +40,10 @@ export class HomeComponent {
   status = '';
   saveStateOn = false;
   dataArray = [];
+  fromDateRange: string = "";
+  toDateRange: string = "";
+  minEndDateRange: string = "";
+  maxEndDateRange: string = "";
 
   onDateChange(): void {
     console.log('Selected date:', this.toDate);
@@ -339,5 +343,42 @@ export class HomeComponent {
     else{
       this.convertArrayToExcel();
     }
+  }
+  updateMinEndDateRange() {
+    if (this.fromDate) {
+      const startDate = new Date(this.fromDate);
+      const minEndDate = new Date(startDate);
+      minEndDate.setDate(startDate.getDate() + 1); // Adding 1 day to start date
+      this.minEndDateRange = this.formatDate(minEndDate); // Set minimum end date
+    } else {
+      this.minEndDateRange = ""; // Reset minimum end date if no start date selected
+    }
+  }
+
+  updateMaxEndDateRange() {
+    if (this.fromDate) {
+      const startDate = new Date(this.fromDate);
+      const maxEndDate = new Date(startDate);
+      maxEndDate.setDate(startDate.getDate() + 2); // Adding 5 days to start date
+      this.maxEndDateRange = this.formatDate(maxEndDate); // Set maximum end date
+    } else {
+      this.maxEndDateRange = ""; // Reset maximum end date if no start date selected
+    }
+  }
+
+  updateToDateRange() {
+    this.updateMinEndDateRange();
+    this.updateMaxEndDateRange();
+  }
+
+
+
+  formatDate(date: Date): string {
+    const mm = date.getMonth() + 1; // getMonth() is zero-based
+    const dd = date.getDate();
+    return [date.getFullYear(),
+            (mm > 9 ? '' : '0') + mm,
+            (dd > 9 ? '' : '0') + dd
+           ].join('-');
   }
 }
