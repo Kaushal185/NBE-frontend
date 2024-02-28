@@ -1,18 +1,15 @@
-
-
-
-
-
 <div class="sub-filters">
 
   <div>
     <div class="filter-box">
 
-      <div class="message-type" style="border-radius: 5px 0px 0px 5px;" [class.selected]="messageType === 'MX'" (click)="messageType !== 'MX' && getSelectedMessageType('MX') ">
-        <label >MX</label>
+      <div class="message-type" style="border-radius: 5px 0px 0px 5px;" [class.selected]="messageType === 'MX'"
+        (click)="messageType !== 'MX' && getSelectedMessageType('MX') ">
+        <label>MX</label>
       </div>
 
-      <div class="message-type" style="border-radius: 0px 5px 5px 0px;" [class.selected]="messageType === 'MT'" (click)="messageType !== 'MT' && getSelectedMessageType('MT')">
+      <div class="message-type" style="border-radius: 0px 5px 5px 0px;" [class.selected]="messageType === 'MT'"
+        (click)="messageType !== 'MT' && getSelectedMessageType('MT')">
         <label>MT</label>
       </div>
 
@@ -61,23 +58,17 @@
 
   <div>
     <mat-label>Starting date: </mat-label>
-  <input matInput type="date" [(ngModel)]="fromDate">
-  <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-  <!-- <mat-datepicker-toggle matIconSuffix [for]="picker" style="color: white;  "></mat-datepicker-toggle> -->
-  <!-- <mat-datepicker #picker color="primary" ></mat-datepicker> -->
+    <input matInput type="date" [(ngModel)]="fromDate" (change)="updateToDateRange()">
   </div>
 
   <div>
     <mat-label>Ending date: </mat-label>
-  <input matInput type="date" [(ngModel)]="toDate">
-  <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-  <!-- <mat-datepicker-toggle matIconSuffix [for]="picker" style="color: white;  "></mat-datepicker-toggle> -->
-  <!-- <mat-datepicker #picker ></mat-datepicker> -->
+    <input matInput type="date" [(ngModel)]="toDate" [min]="minEndDateRange" [max]="maxEndDateRange">
   </div>
 
 
   <div>
-    <button (click)="currentPage = 0" (click)="getQueryData()" >SEARCH</button>
+    <button (click)="currentPage = 0" (click)="getQueryData()">SEARCH</button>
   </div>
 
 
@@ -123,15 +114,6 @@
         <div>
           <form>
             <div style="display: flex; flex-direction: row; gap: 5px;">
-              <div>
-                <input type="radio" id="java" name="language" value="page" #pageRadio>
-                <label for="page">Page</label><br>
-                <input type="radio" id="python" name="language" value="all" #allRadio>
-                <label for="all">All</label>
-              </div>
-              <div style="display: flex; justify-content: center; align-items: center;">
-                <button (click)="export(pageRadio.checked ? pageRadio.value : allRadio.value)">Export</button>
-              </div>
             </div>
           </form>
         </div>
@@ -140,7 +122,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay" ></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
 
   </table>
 
@@ -152,53 +134,66 @@
       Loading...
     </div> -->
 
-    <div class="page-buttons" (click)="loadFirstPage()"><< FIRST</div>
-    <div class="page-buttons" (click)="loadPreviousPage()">< PREV</div>
-    <div class="page-number">{{currentPage + 1}} of {{totalPages}}</div>
-    <div class="page-buttons" (click)="loadNextPage()">NEXT ></div>
-    <div class="page-buttons" (click)="loadLastPage()">LAST >></div>
+    <div>
+
+    </div>
+
+    <div style="display: flex;">
+      <div class="page-buttons" (click)="loadFirstPage()"><< FIRST</div>
+      <div class="page-buttons" (click)="loadPreviousPage()">< PREV</div>
+      <div class="page-number">{{currentPage + 1}} of {{totalPages}}</div>
+      <div class="page-buttons" (click)="loadNextPage()">NEXT ></div>
+      <div class="page-buttons" (click)="loadLastPage()">LAST >></div>
+    </div>
+
+    <div>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <!-- <button (click)="export(pageRadio.checked ? pageRadio.value : allRadio.value)">Export</button> -->
+        <button (click)="convertArrayToExcel()">Export</button>
+      </div>
+    </div>
 
   </div>
 
-</div>
-<div *ngIf="notFound" style="display: flex; justify-content: center;">
-  {{notFoundMessage}}
-</div>
+    </div>
+    <div *ngIf="notFound" style="display: flex; justify-content: center;">
+      {{notFoundMessage}}
+    </div>
 
 
-  <div class="loader" *ngIf="loading"> <!-- Show loading spinner when data is being loaded -->
-    <mat-spinner diameter="30"></mat-spinner>
-    Loading...
-  </div>
+    <div class="loader" *ngIf="loading"> <!-- Show loading spinner when data is being loaded -->
+      <mat-spinner diameter="30"></mat-spinner>
+      Loading...
+    </div>
 
-<!-- <div>
+    <!-- <div>
 <button (click)="loadPreviousPage()">Previous Page</button>
 <button (click)="loadNextPage()">Next Page</button>
 </div> -->
 
 
-<!-- <div *ngFor="let entity of entities"> -->
-<!-- Display your entity data here -->
-<!-- <p>{{ entity.id }} - {{ entity.messageType }} - {{ entity.direction }} - {{ entity.filename }}</p> -->
-<!-- <p>ID: {{ entity.id }} | Message Type: {{ entity.messageType }} | Created On: {{ entity.createdOn | date:'medium' }}</p> -->
-<!-- <p>Message Type: {{ entity.messageType }}</p> -->
-<!-- <p>Created On: {{ entity.createdOn | date:'medium' }}</p> -->
-<!-- <p>Message: {{ entity.message }}</p> -->
-<!-- </div> -->
+    <!-- <div *ngFor="let entity of entities"> -->
+    <!-- Display your entity data here -->
+    <!-- <p>{{ entity.id }} - {{ entity.messageType }} - {{ entity.direction }} - {{ entity.filename }}</p> -->
+    <!-- <p>ID: {{ entity.id }} | Message Type: {{ entity.messageType }} | Created On: {{ entity.createdOn | date:'medium' }}</p> -->
+    <!-- <p>Message Type: {{ entity.messageType }}</p> -->
+    <!-- <p>Created On: {{ entity.createdOn | date:'medium' }}</p> -->
+    <!-- <p>Message: {{ entity.message }}</p> -->
+    <!-- </div> -->
 
 
-<!-- <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 0 10px; color: white;">
+    <!-- <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 0 10px; color: white;">
 
   <div class="search" style="padding: 5px;">
      <label for="" style="font-size: medium;">Search By ID: </label> label for filter -->
 
     <!-- <input [disabled]="loading" matInput [(ngModel)]="searchId" placeholder="Example - 133" -->
-      <!-- style="padding: 1px 3px; margin: 0px 5px;"> filter box -->
+    <!-- style="padding: 1px 3px; margin: 0px 5px;"> filter box -->
 
     <!-- <button (click)="search(searchId)" [disabled]="loading">Search</button> -->
 
     <!-- <button (click)="clear()" [disabled]="loading">Clear</button> -->
-  <!-- </div> -->
+    <!-- </div> -->
 
-  <!-- <label for="" style="text-align: right; "><span style="font-weight: bold; letter-spacing: 1px;">FAB</span>MISR</label> -->
-<!-- </div>  -->
+    <!-- <label for="" style="text-align: right; "><span style="font-weight: bold; letter-spacing: 1px;">FAB</span>MISR</label> -->
+    <!-- </div>  -->
