@@ -7,7 +7,8 @@ import { HomeNewComponent } from './components/home-new/home-new.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { AuthGuard } from './auth.guard';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { LandingPageComponent } from './landing-page/landing-page.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+
 
 const routes: Routes = [
   { path: "application", component: LandingPageComponent},

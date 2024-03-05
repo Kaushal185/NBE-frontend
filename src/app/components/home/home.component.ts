@@ -40,6 +40,7 @@ export class HomeComponent {
   status = '';
   saveStateOn = false;
   dataArray = [];
+  refNumber: string = '';
 
   onDateChange(): void {
     console.log('Selected date:', this.toDate);
@@ -340,4 +341,16 @@ export class HomeComponent {
       this.convertArrayToExcel();
     }
   }
+
+  call(){
+    const id = 'qwerty123';
+    console.log('search');
+    this.swiftMsgService.searchRecord(id).subscribe(
+      response => {
+        console.log(response);
+      }
+    )
+  }
+
+
 }

@@ -29,7 +29,7 @@ export class SwiftMsgService {
   }
 
   searchRecord(id: any): Observable<any> {
-    const url = `${this.apiUrl}/search?id=${id}`;
+    const url = `${this.apiUrl}/ref?id=${id}`;
     return this.http.get(url);
   }
 

@@ -21,8 +21,7 @@ import { HomeNewComponent } from './components/home-new/home-new.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MatNativeDateModule } from '@angular/material/core';
-import { LandingPageComponent } from './landing-page/landing-page.component';
-
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 
 @NgModule({

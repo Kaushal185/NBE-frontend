@@ -35,8 +35,8 @@ export class MessageComponent {
 
 
   copiedStates:boolean = false;
-  formattedOriginalMsg: string = "DATA NOT PROCESSED";
-  formattedTranslatedMsg:string = "DATA NOT PROCESSED";
+  formattedOriginalMsg: string = "Loading...";
+  formattedTranslatedMsg:string = "Loading...";
 
 
 
@@ -47,7 +47,7 @@ export class MessageComponent {
   ) {}
 
   ngOnInit() {
-    this.selectedId = this.msgDataService.getSelectedId();
+    // this.selectedId = this.msgDataService.getSelectedId();
     this.loadMessages();
   }
 
@@ -79,6 +79,12 @@ export class MessageComponent {
           this.formattedOriginalMsg = this.formatJson(this.obj1.originalMsg);
         }
 
+        if(response.length === 1){
+
+          this.formattedTranslatedMsg = "MESSAGE NOT TRANSALTED";
+
+        } else {
+
         this.obj2.translatedMsg = response[1].message;
         this.obj2.id = response[1].id;
         this.obj2.identifier = response[1].identifier;
@@ -94,8 +100,12 @@ export class MessageComponent {
         console.log(response);
         console.log(this.obj1);
 
+      }
+
       },
       error => {
+        this.formattedOriginalMsg = "DATA NOT PROCESSED";
+        this.formattedTranslatedMsg = "DATA NOT PROCESSED";
         console.log('error');
       }
     )
