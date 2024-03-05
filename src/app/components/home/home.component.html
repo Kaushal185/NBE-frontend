@@ -20,22 +20,7 @@
     </div>
   </div>
 
-  <div>
-    <label for="status">Status: </label>
-    <select [(ngModel)]="status">
-      <option value="">--SELECT--</option>
-      <option value="LOADED">LOADED</option>
-      <option value="RETURNED">RETURNED</option>
-      <option value="PROCESSED">PROCESSED</option>
-      <option value="VALIDATED">VALIDATED</option>
-      <option value="VERIFIED">VERIFIED</option>
-      <option value="TRANSLATED">TRANSLATED</option>
-      <option value="ROUTED">ROUTED</option>
-
-    </select>
-  </div>
-
-  <div>
+  <div style="display: flex; flex-direction: column; gap: 2px;">
     <label for="">Identifier: </label>
     <select name="" id="" *ngIf="messageType === 'MX'" [(ngModel)]="identifier">
       <option value="">--SELECT--</option>
@@ -56,12 +41,27 @@
     </select>
   </div>
 
-  <div>
+  <div style="display: flex; flex-direction: column; gap: 2px;">
+    <label for="status">Status: </label>
+    <select [(ngModel)]="status">
+      <option value="">--SELECT--</option>
+      <option value="LOADED">LOADED</option>
+      <option value="RETURNED">RETURNED</option>
+      <option value="PROCESSED">PROCESSED</option>
+      <option value="VALIDATED">VALIDATED</option>
+      <option value="VERIFIED">VERIFIED</option>
+      <option value="TRANSLATED">TRANSLATED</option>
+      <option value="ROUTED">ROUTED</option>
+
+    </select>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 2px;">
     <mat-label>Starting date: </mat-label>
     <input matInput type="date" [(ngModel)]="fromDate" (change)="updateToDateRange()">
   </div>
 
-  <div>
+  <div style="display: flex; flex-direction: column; gap: 2px;">
     <mat-label>Ending date: </mat-label>
     <input matInput type="date" [(ngModel)]="toDate" [min]="minEndDateRange" [max]="maxEndDateRange">
   </div>
@@ -75,6 +75,14 @@
 </div>
 
 <div class="records" id="records">
+
+  <div class="top-search">
+    <!-- <img src="assets/magnify-glass-icon.svg" alt=""> -->
+    <input type="text" value="" placeholder="Enter Reference Number" [(ngModel)]="refNumber">
+    <button (click)="call()">
+      <img src="assets/magnify-glass-icon.svg" alt="">
+    </button>
+  </div>
 
 
   <table mat-table [dataSource]="records" matSort [matSortDisabled]="loading">

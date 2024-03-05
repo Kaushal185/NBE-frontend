@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class MsgDataService {
 
-  selectedId: number = 0;
+  private selectedIdKey = 'selectedId';
 
 
   private apiUrl = 'http://localhost:8090/api/msg-relations';
@@ -17,24 +17,26 @@ export class MsgDataService {
   ) { }
 
 
-  setSelectedId(id: any): any {
-    this.selectedId = id;
+  setSelectedId(id: any): void {
+    // this.selectedId = id;
+    localStorage.setItem(this.selectedIdKey, id);
   }
 
-  getSelectedId(): any {
-    return this.selectedId;
-  }
+  // getSelectedId(): any {
+  //   return this.selectedId;
+  // }
 
   getSelectedIdMessages(): Observable<any> {
-    const url = `${this.apiUrl}/${this.selectedId}`
+    const selectedId = localStorage.getItem(this.selectedIdKey);
+    const url = `${this.apiUrl}/${selectedId}`
     return this.http.get(url);
   }
 
-  postSelectedMessage(): Observable<any> {
-    const url = `${this.apiUrl}/id`;
-    const requestBody = { id: this.selectedId }; // Shorthand for { id: id }
-    return this.http.post(url, requestBody);
-  }
+  // postSelectedMessage(): Observable<any> {
+  //   const url = `${this.apiUrl}/id`;
+  //   const requestBody = { id: this.selectedId }; // Shorthand for { id: id }
+  //   return this.http.post(url, requestBody);
+  // }
 
 
 }

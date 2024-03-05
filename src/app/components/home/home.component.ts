@@ -40,6 +40,7 @@ export class HomeComponent {
   status = '';
   saveStateOn = false;
   dataArray = [];
+  refNumber: string = '';
   fromDateRange: string = "";
   toDateRange: string = "";
   minEndDateRange: string = "";
@@ -381,4 +382,16 @@ export class HomeComponent {
             (dd > 9 ? '' : '0') + dd
            ].join('-');
   }
+
+  call(){
+    const id = 'qwerty123';
+    console.log('search');
+    this.swiftMsgService.searchRecord(id).subscribe(
+      response => {
+        console.log(response);
+      }
+    )
+  }
+
+
 }

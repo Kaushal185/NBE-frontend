@@ -9,7 +9,7 @@
   z-index: 100;
   top: 0;
   color: white;
-  background-color: rgba(0, 43, 116, 1);
+  background-color: var(--nav-background-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,19 +35,19 @@
 }
 
 .nav-fixed .right button {
-  background-color: rgba(0, 43, 116, 1);
-  border-radius: 5px 2px 5px 2px;
+  background-color: var(--button-background-color);
+  border-radius: 5px;
   color: white;
   border-color: rgb(201, 201, 201);
   font-size: medium;
-  border-style: outset;
+  border-style: solid;
   border-width: 1px;
   padding: 10px 15px;
   cursor: pointer;
 }
 
 .nav-fixed .right button:hover {
-  background-color: rgb(0, 73, 199);
+  background-color: var(--button-hover-background-color);
 }
 
 
@@ -73,12 +73,12 @@
 
 .login-container {
   margin: 80px auto;
-  background-color: rgba(00, 00, 00, 0.1);
+  background-color: var(--nav-background-color);
   padding: 40px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   width: 300px;
-  color: white;
+  color: var(--base-text);
 backdrop-filter: blur(50px);
 }
 
@@ -98,7 +98,7 @@ backdrop-filter: blur(50px);
 
 .login-container button {
   font-size: large;
-  background-color: rgba(0, 43, 116, 1);
+  background-color: var(--button-background-color);
   color: #fff;
   padding: 10px;
   border: none;
@@ -109,7 +109,7 @@ backdrop-filter: blur(50px);
 }
 
 .login-container button:hover {
-  background-color:rgba(0, 73, 199);
+  background-color:var(--button-hover-background-color);
 }
 
 .login-container p {
@@ -120,6 +120,7 @@ backdrop-filter: blur(50px);
   text-align: center;
   font-size: medium;
   font-weight: bold;
+  letter-spacing: 1px;
   color: #ff0000;
-  text-shadow: 0px 0px 15px black;
+  /* text-shadow: 0px 0px 30px red; */
 }
