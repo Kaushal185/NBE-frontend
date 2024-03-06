@@ -56,12 +56,12 @@
     </select>
   </div>
 
-  <div>
+  <div style="display: flex; flex-direction: column; gap: 2px;">
     <mat-label>Starting date: </mat-label>
     <input matInput type="date" [(ngModel)]="fromDate" (change)="updateToDateRange()">
   </div>
 
-  <div>
+  <div style = "display: flex;flex-direction: column; gap: 2px;">
     <mat-label>Ending date: </mat-label>
     <input matInput type="date" [(ngModel)]="toDate" [min]="minEndDateRange" [max]="maxEndDateRange" [disabled]="!fromDate">
   </div>
