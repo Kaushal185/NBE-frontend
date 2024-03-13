@@ -4,13 +4,12 @@
 </div>
 
 <div class="main-container">
-  <!-- <div><h1 style="color: rgba(0, 43, 116, 1)">Showing Messages for ID : {{selectedId}} </h1></div> -->
-  <!-- <div class="messages-container"> -->
+
     <div class="message-column">
       <h2>ORIGINAL MESSAGE</h2>
       <!-- <p><strong>ID:</strong> <span style="color: rgba(0, 43, 116, 1); ">{{obj1.id}}</span></p> -->
-      <p><strong>Status: <span style="color: var(--base-text) ">{{obj1.status}} </span></strong>
-        <strong>&emsp;Identifier: <span style="color: var(--base-text); ">{{obj1.identifier}}</span></strong>
+      <p><strong>Status: <span style="color: var(--base-text-2) ">{{obj1.status}} </span></strong>
+        <strong>&emsp;Identifier: <span style="color: var(--base-text-2); ">{{obj1.identifier}}</span></strong>
       </p>
       <button #copyButton1 class="copy-button"
         (click)="copyToClipboard(formattedOriginalMsg, copyButton1)">📑Copy</button>
@@ -23,8 +22,8 @@
     <div class="message-column">
       <h2>TRANSLATED MESSAGE</h2>
       <!-- <p><strong>ID:</strong> <span style="color: rgba(0, 43, 116, 1); ">{{obj2.id}}</span></p> -->
-      <p><strong>Status: <span style="color: var(--base-text); ">{{obj2.status}}
-          </span>&emsp;Identifier: <span style="color: var(--base-text); ">{{obj2.identifier}}</span></strong></p>
+      <p><strong>Status: <span style="color: var(--base-text-2); ">{{obj2.status}}
+          </span>&emsp;Identifier: <span style="color: var(--base-text-2); ">{{obj2.identifier}}</span></strong></p>
       <p></p>
       <button #copyButton2 class="copy-button"
         (click)="copyToClipboard(formattedTranslatedMsg, copyButton2)">📑Copy</button>
@@ -32,5 +31,5 @@
         <pre>{{ formattedTranslatedMsg }}</pre>
       </div>
     </div>
-  <!-- </div> -->
+
 </div>

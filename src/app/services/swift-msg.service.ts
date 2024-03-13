@@ -28,8 +28,8 @@ export class SwiftMsgService {
     return this.http.get(url);
   }
 
-  searchRecord(id: any): Observable<any> {
-    const url = `${this.apiUrl}/ref?id=${id}`;
+  searchRecord(reference: any): Observable<any> {
+    const url = `${this.apiUrl}/ref?reference=${reference}`;
     return this.http.get(url);
   }
 
@@ -39,7 +39,7 @@ export class SwiftMsgService {
   }
 
   getFilterForListToExcel(messageType:string, identifier: string, status: string, from: string, to: string): Observable<any>{
-    const url = `${this.apiUrl}/filtered?messageType=${messageType}&identifier=${identifier}&status=${status}&from=${from}&to=${to}`;
+    const url = `${this.apiUrl}/export?messageType=${messageType}&identifier=${identifier}&status=${status}&from=${from}&to=${to}`;
     return this.http.get(url);
   }
 

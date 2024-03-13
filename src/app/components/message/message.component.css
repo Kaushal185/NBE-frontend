@@ -15,18 +15,8 @@
   /* overflow-x:auto; */
 }
 
-
-
-.messages-container {
-  background-color: red;
-  display: flex;
-  gap: 10px; /* Adjust the gap between columns */
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
-  width: 100% ;
-}
-
 .message-column {
-  /* flex: 1; */
+  flex: 1;
   max-width: 50%;
   /* Adjust the width of each column */
 }

@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class MsgDataService {
+export class MsgTraceService {
+
 
   private selectedIdKey = 'selectedId';
 
-  private apiUrl = 'http://localhost:8090/api/msg-relations';
+  private apiUrl = 'http://localhost:8090/api/msg-trace';
 
   constructor(
     private http: HttpClient
@@ -19,10 +20,10 @@ export class MsgDataService {
     sessionStorage.setItem(this.selectedIdKey, id);
   }
 
-  getSelectedIdMessages(): Observable<any> {
+  getMessageHistory(): Observable<any> {
     const selectedId = sessionStorage.getItem(this.selectedIdKey);
-    const url = `${this.apiUrl}/${selectedId}`
+    const url = `${this.apiUrl}/history?id=${selectedId}`
     return this.http.get(url);
   }
-
 }
+

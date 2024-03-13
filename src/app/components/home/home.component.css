@@ -106,7 +106,7 @@ color: white;
 .top-search {
   margin: 5px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -166,6 +166,7 @@ color: white;
 .records table button {
   /* width: auto; */
   /* padding: auto ; */
+  margin: 1px;
   border-radius: 5px;
   color: white;
   background-color: var(--button-background-color);
@@ -178,6 +179,12 @@ color: white;
 .records table button:hover {
   background-color: var(--button-hover-background-color);
 }
+
+table .table-headers {
+  font-size: large;
+  color: var(--base-text-2) ;
+}
+
 
 .loading-container {
   /* margin: 100px; */

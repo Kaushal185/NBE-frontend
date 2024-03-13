@@ -81,7 +81,7 @@ export class MessageComponent {
 
         if(response.length === 1){
 
-          this.formattedTranslatedMsg = "MESSAGE NOT TRANSALTED";
+          this.formattedTranslatedMsg = "MESSAGE NOT TRANSLATED";
 
         } else {
 

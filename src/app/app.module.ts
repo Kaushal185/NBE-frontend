@@ -21,6 +21,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { HistoryPageComponent } from './components/history-page/history-page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     HomeNewComponent,
     NavBarComponent,
     PageNotFoundComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    HistoryPageComponent
   ],
   imports: [
     BrowserModule,
