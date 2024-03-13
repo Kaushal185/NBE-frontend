@@ -1,5 +1,7 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { MsgDataService } from 'src/app/services/msg-data.service';
+import { SwiftMsgService } from 'src/app/services/swift-msg.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -13,7 +15,8 @@ export class NavBarComponent {
   @Input() projectTitle: string = "";
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private swiftService: SwiftMsgService
   ) {}
 
   logout(): void {

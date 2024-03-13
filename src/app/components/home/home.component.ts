@@ -10,6 +10,7 @@ import { SearchQueryService } from 'src/app/services/search-query.service';
 import { SwiftMsgService } from 'src/app/services/swift-msg.service';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { MsgTraceService } from 'src/app/services/msg-trace.service';
 
 @Component({
   selector: 'app-home',
@@ -21,16 +22,17 @@ export class HomeComponent {
   // for loading spinner
   loading: boolean = true;
   notFound: boolean = false;
-  loadDisable: boolean = false;
-  searchQueryAdded: boolean = false;
+  // loadDisable: boolean = true;
+  searchQueryAdded: boolean = false; //sets to true if we have performerd a filtered search
 
   records: MatTableDataSource<any> = new MatTableDataSource<any>();
-  columnsToDisplay = ['id', 'messageType', 'identifier', 'status', 'createdOn', 'updatedOn', 'view'];
+  columnsToDisplay = ['id', 'reference', 'messageType', 'identifier', 'status', 'createdOn', 'updatedOn', 'view'];
 
   searchId!: number;
   selectedId: any;
   currentPage = 0;
   totalPages = 1;
+  pageSize = 15;
   notFoundMessage = '';
   selectedMessageTypeFilter = 'MX';
   messageType = 'MX';
@@ -40,14 +42,15 @@ export class HomeComponent {
   status = '';
   saveStateOn = false;
   dataArray = [];
+  refNumber: string = '';
   fromDateRange: string = "";
   toDateRange: string = "";
   minEndDateRange: string = "";
   maxEndDateRange: string = "";
 
-  onDateChange(): void {
-    console.log('Selected date:', this.toDate);
-  }
+  // onDateChange(): void {
+  //   console.log('Selected date:', this.toDate);
+  // }
 
   // define customeFilterPredicate to only apply to ID column
   customFilterPredicate(data: any, filter: string): boolean {
@@ -61,15 +64,17 @@ export class HomeComponent {
     private swiftMsgService: SwiftMsgService,
     private router: Router,
     private msgDataService: MsgDataService,
-    private SQS: SearchQueryService
+    private SQS: SearchQueryService,
+    private msgTraceService: MsgTraceService
   ) { }
 
   ngOnInit(): void {
     console.log('NG-ONINIT');
-    if(this.SQS.savedStateOn){
+    if (this.SQS.savedStateOn) {
 
       this.currentPage = this.SQS.currentPage;
       this.totalPages = this.SQS.totalPages;
+      this.pageSize = this.SQS.pageSize;
       this.messageType = this.SQS.messageType;
       this.status = this.SQS.status;
       this.identifier = this.SQS.identifier;
@@ -78,125 +83,127 @@ export class HomeComponent {
       this.getQueryData();
 
     } else {
-    this.loadInitialPage();
+      this.loadInitialPage();
     }
   }
 
-  ngAfterViewInit() {
-    this.records.paginator = this.paginator;
-    this.records.sort = this.sort;
-    this.records.filterPredicate = this.customFilterPredicate.bind(this);
+  // ngAfterViewInit() {
+  //   this.records.paginator = this.paginator;
+  //   this.records.sort = this.sort;
+  //   this.records.filterPredicate = this.customFilterPredicate.bind(this);
 
-    console.log('NG-AFTERVIEWINIT');
-  }
+  //   console.log('NG-AFTERVIEWINIT');
+  // }
 
-  loadSearchedData(): void {
-    this.swiftMsgService.getAllRecords()
-      .subscribe(data => {
-        console.log(data);
-        this.records.data = data;
-        this.loading = false;
-        console.log('DATA FETCHED: Home.loadData()');
-      });
-  }
+  // loadSearchedData(): void {
+  //   this.swiftMsgService.getAllRecords()
+  //     .subscribe(data => {
+  //       console.log(data);
+  //       this.records.data = data;
+  //       this.loading = false;
+  //       console.log('DATA FETCHED: Home.loadData()');
+  //     });
+  // }
 
   loadInitialPage(): void {
     this.records.data = [];
+    this.loading = true;
+    this.notFound = false;
 
-    // fixed page size = 15
-    this.swiftMsgService.getAllEntities(this.currentPage,15,this.messageType)
+    this.swiftMsgService.getAllEntities(this.currentPage, this.pageSize, this.messageType)
       .subscribe(
-        (newData) => {
+        (response) => {
           console.log('Loading data for page:', this.currentPage);
-          console.log('Received data:', newData);
-          console.log(newData.totalPages);
-          this.totalPages = newData.totalPages;
+          console.log('Received data:', response);
+          console.log(response.totalPages);
+          this.records.data = response.content;
+          this.totalPages = response.totalPages;
           this.notFound = false;
-
-          this.records.data = newData.content;
           this.loading = false;
         },
         (error) => {
           console.error('Error loading more data:', error);
           console.log(error);
-      if (error.status === 404) {
-        this.notFoundMessage = error.error;
-      }
-      // this.loading = false;
+          if (error.status === 404) {
+            this.notFoundMessage = error.error;
+          }
+          this.notFoundMessage = "Connection Error, please check connection.";
+          this.loading = false;
           this.notFound = true;
-        this.records.data = [];
+          // this.records.data = [];
+
         }
       );
   }
 
-  loadMore() {
-    this.loading = true;
-    this.loadInitialPage();
-  }
+  // loadMore() {
+  //   this.loading = true;
+  //   this.loadInitialPage();
+  // }
 
   getQueryData(): void {
     this.searchQueryAdded = true;
-    console.log(this.identifier);
-    console.log(this.status);
-    console.log(this.fromDate);
-    console.log(this.toDate);
-    console.log(this.messageType);
+    // console.log(this.identifier);
+    // console.log(this.status);
+    // console.log(this.fromDate);
+    // console.log(this.toDate);
+    // console.log(this.messageType);
     this.loading = true;
+    this.notFound = false;
 
-    this.swiftMsgService.getQueryData(this.currentPage, 15, this.messageType, this.identifier, this.status, this.fromDate, this.toDate).subscribe(
+    this.swiftMsgService.getQueryData(this.currentPage, this.pageSize, this.messageType, this.identifier, this.status, this.fromDate, this.toDate).subscribe(
       (response) => {
         console.log(this.records.data);
         this.records.data = [];
         this.records.data = response.content;
         this.totalPages = response.totalPages;
         this.notFound = false;
-
         this.loading = false;
         console.log(response);
       },
+
       (error) => {
         console.log(error);
-      if (error.status === 404) {
-        this.notFoundMessage = error.error;
+        if (error.status === 404) {
+          this.notFoundMessage = error.error;
+        }
+        this.notFound = true;
+        this.records.data = [];
+        this.loading = false;
+        console.log(this.notFoundMessage);
       }
-      // this.loading = false;
-      this.notFound = true;
-      this.records.data = [];
-      this.loading = false;
-      console.log(this.notFoundMessage);
-    }
     );
   }
 
   loadFirstPage(): void {
-    if(this.currentPage !== 0){
-    this.currentPage = 0;
-    if(this.searchQueryAdded) this.getQueryData();
-    else this.loadInitialPage();
+    if (this.currentPage !== 0) {
+      this.currentPage = 0;
+      if (this.searchQueryAdded) this.getQueryData();
+      else this.loadInitialPage();
     }
   }
 
   loadNextPage(): void {
-    if(this.currentPage < this.totalPages - 1) {
-    this.currentPage++;
-    if(this.searchQueryAdded) this.getQueryData();
-    else this.loadInitialPage();
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+      if (this.searchQueryAdded) this.getQueryData();
+      else this.loadInitialPage();
     }
   }
 
   loadPreviousPage(): void {
     if (this.currentPage > 0) {
       this.currentPage--;
-      if(this.searchQueryAdded) this.getQueryData();
+      if (this.searchQueryAdded) this.getQueryData();
       else this.loadInitialPage();
     }
   }
 
   loadLastPage(): void {
-    if(this.currentPage !== this.totalPages - 1){
-    this.currentPage = this.totalPages - 1;
-    if(this.searchQueryAdded) this.getQueryData();
-    else this.loadInitialPage();
+    if (this.currentPage !== this.totalPages - 1) {
+      this.currentPage = this.totalPages - 1;
+      if (this.searchQueryAdded) this.getQueryData();
+      else this.loadInitialPage();
     }
   }
 
@@ -204,20 +211,31 @@ export class HomeComponent {
     this.SQS.savedStateOn = true;
     this.SQS.currentPage = this.currentPage;
     this.SQS.totalPages = this.totalPages;
+    this.SQS.pageSize = this.pageSize;
     this.SQS.messageType = this.messageType;
     this.SQS.status = this.status;
     this.SQS.identifier = this.identifier;
     this.SQS.fromDate = this.fromDate;
     this.SQS.toDate = this.toDate;
     this.msgDataService.setSelectedId(id);
-    // this.selectedId = id;
     this.router.navigate([`dashboard/${id}/message`]);
   }
 
-  search(id: any) {
-    this.loadDisable = true;
+  openHistory(id: any): void {
+    this.SQS.savedStateOn = true;
+    this.SQS.currentPage = this.currentPage;
+    this.SQS.totalPages = this.totalPages;
+    this.SQS.pageSize = this.pageSize;
+    this.SQS.messageType = this.messageType;
+    this.SQS.status = this.status;
+    this.SQS.identifier = this.identifier;
+    this.SQS.fromDate = this.fromDate;
+    this.SQS.toDate = this.toDate;
+    this.msgTraceService.setSelectedId(id);
+    this.router.navigate([`dashboard/${id}/history`]);
+  }
 
-    // this.searching = true;
+  search(id: any) {
     this.loading = true;
     this.swiftMsgService.searchRecord(id).subscribe(
       (data) => {
@@ -244,107 +262,100 @@ export class HomeComponent {
   }
 
   clear() {
-    this.loadDisable = false;
-    this.notFound = false;
-    this.records.data = [];
-    this.currentPage = 0;
-    this.loading = true;
-    this.loadInitialPage();
+    // this.loadDisable = false;
+    // this.notFound = false;
+    // this.records.data = [];
+    // this.currentPage = 0;
+    // this.loading = true;
+    // this.loadInitialPage();
+    this.getSelectedMessageType(this.messageType);
   }
 
   getSelectedMessageType(messageType: string) {
     this.searchQueryAdded = false;
-    console.log(messageType);
+    // console.log(messageType);
     this.messageType = messageType;
     this.fromDate = '';
-  this.toDate = '';
-  this.identifier = '';
-  this.status = '';
-    this.loading = true;
+    this.toDate = '';
+    this.identifier = '';
+    this.status = '';
+    // this.loading = true;
     this.currentPage = 0;
     this.loadInitialPage();
-  }
-
-  applyFilter(event: any) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.records.filter = filterValue.trim().toLowerCase();
-
-    if (this.records.paginator) {
-      this.records.paginator.firstPage();
-    }
   }
 
   downloadExcel(): void {
     const fileName = 'table_data.xlsx';
     const recordsElement = document.getElementById('records'); // Original table element
     if (recordsElement) {
-        // Clone the table element
-        const clonedTable = recordsElement.cloneNode(true) as HTMLElement;
-        // Remove the last column from the cloned table
-        const rows = clonedTable.querySelectorAll('tr');
-        rows.forEach(row => {
-            const lastCell = row.querySelector('td:last-child, th:last-child');
-            if (lastCell) {
-                lastCell.remove();
-            }
-        });
-        // Create a new workbook
-        const wb: XLSX.WorkBook = XLSX.utils.table_to_book(clonedTable);
-        // Convert the workbook to a binary string
-        const wbout: ArrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        // Save the file using file-saver
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
-        // Restore the original table element after exporting
-        // recordsElement.parentElement?.replaceChild(clonedTable, recordsElement);
+      // Clone the table element
+      const clonedTable = recordsElement.cloneNode(true) as HTMLElement;
+      // Remove the last column from the cloned table
+      const rows = clonedTable.querySelectorAll('tr');
+      rows.forEach(row => {
+        const lastCell = row.querySelector('td:last-child, th:last-child');
+        if (lastCell) {
+          lastCell.remove();
+        }
+      });
+      // Create a new workbook
+      const wb: XLSX.WorkBook = XLSX.utils.table_to_book(clonedTable);
+      // Convert the workbook to a binary string
+      const wbout: ArrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      // Save the file using file-saver
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fileName);
+      // Restore the original table element after exporting
+      // recordsElement.parentElement?.replaceChild(clonedTable, recordsElement);
     } else {
-        console.error("Unable to find records element");
+      console.error("Unable to find records element");
     }
   }
   async convertArrayToExcel(): Promise<void> {
     try {
-        await this.getFilterForListToExcel(); // Wait for getFilterForListToExcel to complete
-        // for(let i=0;i<this.dataArray.length;i++){
-        //   const dataWithoutMessage = this.dataArray[i].map(item => {
-        //     const { message, ...rest } = item; // Destructure 'message' and collect the rest of the properties
-        //     return rest; // Return the object without the 'message' field
-        // });
-        // }
-        // Create a new workbook for downloading all records.
-        const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        // Create a new worksheet from the array data
-        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataArray);
-        // Add the worksheet to the workbook
-        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        // Convert the workbook to a binary string
-        const wbout: ArrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        // Save the file using file-saver
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'data.xlsx');
+      await this.getFilterForListToExcel(); // Wait for getFilterForListToExcel to complete
+      // for(let i=0;i<this.dataArray.length;i++){
+      //   const dataWithoutMessage = this.dataArray[i].map(item => {
+      //     const { message, ...rest } = item; // Destructure 'message' and collect the rest of the properties
+      //     return rest; // Return the object without the 'message' field
+      // });
+      // }
+      // Create a new workbook for downloading all records.
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      // Create a new worksheet from the array data
+      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataArray);
+      // Add the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      // Convert the workbook to a binary string
+      const wbout: ArrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      // Save the file using file-saver
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'data.xlsx');
     } catch (error) {
-        console.error('Error converting array to Excel:', error);
+      console.error('Error converting array to Excel:', error);
     }
-}
+  }
 
   async getFilterForListToExcel(): Promise<void> {
-      try {
-          const response = await this.swiftMsgService.getFilterForListToExcel(this.messageType, this.identifier, this.status, this.fromDate, this.toDate).toPromise();
-          this.dataArray = response;
-          console.log(response);
-      } catch (error) {
-          console.error('Error fetching data:', error);
-          throw error; // Propagate the error if necessary
-      }
+    try {
+      const response = await this.swiftMsgService.getFilterForListToExcel(this.messageType, this.identifier, this.status, this.fromDate, this.toDate).toPromise();
+      this.dataArray = response;
+      console.log(response);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error; // Propagate the error if necessary
+    }
   }
 
 
   export(selectedValue: string): void {
-    if(selectedValue == 'page'){
+    if (selectedValue == 'page') {
       this.downloadExcel();
     }
-    else{
+    else {
       this.convertArrayToExcel();
     }
   }
   updateMinEndDateRange() {
+    this.toDate = "";
     if (this.fromDate) {
       const startDate = new Date(this.fromDate);
       const minEndDate = new Date(startDate);
@@ -371,14 +382,49 @@ export class HomeComponent {
     this.updateMaxEndDateRange();
   }
 
-
-
   formatDate(date: Date): string {
     const mm = date.getMonth() + 1; // getMonth() is zero-based
     const dd = date.getDate();
     return [date.getFullYear(),
-            (mm > 9 ? '' : '0') + mm,
-            (dd > 9 ? '' : '0') + dd
-           ].join('-');
+    (mm > 9 ? '' : '0') + mm,
+    (dd > 9 ? '' : '0') + dd
+    ].join('-');
   }
+
+  searchByReference(reference: string) {
+    // const id = 'qwerty12'; static value to test
+    console.log('search');
+    this.loading = true;
+    this.notFound = false;
+
+    this.swiftMsgService.searchRecord(reference).subscribe(
+      response => {
+        console.log(response);
+        this.records.data = [response];
+        this.loading = false;
+        this.notFound = false;
+      },
+      error => {
+        console.log(error);
+        if (error.status === 404) {
+          this.notFoundMessage = error.error;
+        }
+        this.notFound = true;
+        this.records.data = [];
+        this.loading = false;
+        console.log(this.notFoundMessage);
+
+      }
+    )
+  }
+
+  pageSizeChange() {
+    if(this.searchQueryAdded){
+      this.getQueryData();
+    } else {
+      this.loadInitialPage();
+    }
+
+  }
+
 }

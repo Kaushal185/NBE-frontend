@@ -7,6 +7,7 @@ export class SearchQueryService {
 
   currentPage = 0;
   totalPages = 1;
+  pageSize = 15;
   messageType = 'MX';
   fromDate = '';
   toDate = '';

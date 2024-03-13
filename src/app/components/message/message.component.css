@@ -1,27 +1,18 @@
 /* Inside your component's CSS file */
 .main-container {
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   width: 80%;
   margin: 50px auto;
-  padding: 20px;
+  padding: 40px;
   background-color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
+  color: rgb(50, 74, 74);
    /* Adjust the gap between columns */
   /* overflow-x:auto; */
-}
-
-
-
-.messages-container {
-  background-color: white;
-  display: flex;
-  gap: 10px; /* Adjust the gap between columns */
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
-  width: 100% ;
 }
 
 .message-column {
@@ -56,17 +47,17 @@
   margin-top: 10px;
   margin-left: 20px;
   color: white;
-  border-color: white;
+  border-color: var(--button-border-color);
   padding: 10px 20px 10px 12px;
   cursor: pointer;
-  border-radius: 8px 2px 8px 2px;
+  border-radius: 5px;
   font-weight: bold;
   border-style:solid;
   border-width: 1px;
-  background-image: linear-gradient(105.18deg,#003da6,#2669dc 40%,#40a9fa 60%,#0c4dbc);
-  background-size: 250% auto;
-  transition: all .5s;
-  border: 1px solid transparent;
+  background-color: var(--button-background-color);
+  /* background-size: 250% auto; */
+  /* transition: all .5s; */
+  /* border: 1px solid transparent; */
 
 }
 
@@ -78,9 +69,9 @@
 
 /* Optional: Add some styling to headings */
 h2 {
-  color: #333;
-  font-size: 18px;
-  margin-bottom: 10px;
+  color: black;
+  /* font-size: 18px; */
+  /* margin-bottom: 100px; */
 }
 
 .highlight {

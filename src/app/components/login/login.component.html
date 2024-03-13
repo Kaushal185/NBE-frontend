@@ -3,12 +3,12 @@
   <!-- <div ><span style="font-weight: bold; letter-spacing: 1px;">FAB</span>MISR</div> -->
   <div class="right">
     <button>ABOUT</button>
-    <button routerLink="/login">LOGIN</button>
+    <!-- <button routerLink="/login">LOGIN</button> -->
   </div>
 </nav>
 <div class="parent">
   <div class="login-container">
-    <h2 style="text-align: center; color: rgb(254, 254, 254); font-size: xx-large; text-shadow: 0px 0px 15px black;">SIGN IN</h2>
+    <h2 style="text-align: center; color:var(--base-text); font-size: xx-large;">SIGN IN</h2>
     <form (ngSubmit)="login()">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" required [(ngModel)]="username">

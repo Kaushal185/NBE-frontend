@@ -20,22 +20,7 @@
     </div>
   </div>
 
-  <div>
-    <label for="status">Status: </label>
-    <select [(ngModel)]="status">
-      <option value="">--SELECT--</option>
-      <option value="LOADED">LOADED</option>
-      <option value="RETURNED">RETURNED</option>
-      <option value="PROCESSED">PROCESSED</option>
-      <option value="VALIDATED">VALIDATED</option>
-      <option value="VERIFIED">VERIFIED</option>
-      <option value="TRANSLATED">TRANSLATED</option>
-      <option value="ROUTED">ROUTED</option>
-
-    </select>
-  </div>
-
-  <div>
+  <div style="display: flex; flex-direction: column; gap: 2px;">
     <label for="">Identifier: </label>
     <select name="" id="" *ngIf="messageType === 'MX'" [(ngModel)]="identifier">
       <option value="">--SELECT--</option>
@@ -56,19 +41,35 @@
     </select>
   </div>
 
-  <div>
+  <div style="display: flex; flex-direction: column; gap: 2px;">
+    <label for="status">Status: </label>
+    <select [(ngModel)]="status">
+      <option value="">--SELECT--</option>
+      <option value="LOADED">LOADED</option>
+      <option value="RETURNED">RETURNED</option>
+      <option value="PROCESSED">PROCESSED</option>
+      <option value="VALIDATED">VALIDATED</option>
+      <option value="VERIFIED">VERIFIED</option>
+      <option value="TRANSLATED">TRANSLATED</option>
+      <option value="ROUTED">ROUTED</option>
+
+    </select>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 2px;">
     <mat-label>Starting date: </mat-label>
     <input matInput type="date" [(ngModel)]="fromDate" (change)="updateToDateRange()">
   </div>
 
-  <div>
+  <div style="display: flex;flex-direction: column; gap: 2px;">
     <mat-label>Ending date: </mat-label>
-    <input matInput type="date" [(ngModel)]="toDate" [min]="minEndDateRange" [max]="maxEndDateRange">
+    <input matInput type="date" [(ngModel)]="toDate" [min]="minEndDateRange" [max]="maxEndDateRange"
+      [disabled]="!fromDate">
   </div>
-
 
   <div>
     <button (click)="currentPage = 0" (click)="getQueryData()">SEARCH</button>
+    <button (click)="clear()">CLEAR</button>
   </div>
 
 
@@ -76,49 +77,56 @@
 
 <div class="records" id="records">
 
+  <div class="top-search">
+    <!-- <img src="assets/magnify-glass-icon.svg" alt=""> -->
+    <input type="text" value="" placeholder="Enter Reference Number" [(ngModel)]="refNumber">
+    <button (click)="searchByReference(refNumber)">
+      <img src="assets/magnify-glass-icon.svg" alt="">
+    </button>
+  </div>
+
 
   <table mat-table [dataSource]="records" matSort [matSortDisabled]="loading">
 
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <th mat-header-cell *matHeaderCellDef class="table-headers">ID</th>
       <td mat-cell *matCellDef="let record"> {{ record.id }} </td>
     </ng-container>
 
+    <ng-container matColumnDef="reference">
+      <th mat-header-cell *matHeaderCellDef class="table-headers">Reference</th>
+      <td mat-cell *matCellDef="let record"> {{ record.reference }} </td>
+    </ng-container>
+
     <ng-container matColumnDef="messageType">
-      <th mat-header-cell *matHeaderCellDef>Message Type</th>
+      <th mat-header-cell *matHeaderCellDef class="table-headers">Message Type</th>
       <td mat-cell *matCellDef="let record"> {{ record.messageType }} </td>
     </ng-container>
 
     <ng-container matColumnDef="identifier">
-      <th mat-header-cell *matHeaderCellDef>Identifier</th>
+      <th mat-header-cell *matHeaderCellDef class="table-headers">Identifier</th>
       <td mat-cell *matCellDef="let record"> {{ record.identifier }} </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <th mat-header-cell *matHeaderCellDef class="table-headers">Status</th>
       <td mat-cell *matCellDef="let record"> {{ record.status }} </td>
     </ng-container>
 
     <ng-container matColumnDef="createdOn">
-      <th mat-header-cell *matHeaderCellDef>Created on</th>
+      <th mat-header-cell *matHeaderCellDef class="table-headers">Created on</th>
       <td mat-cell *matCellDef="let record"> {{ record.createdOn | date:'medium'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="updatedOn">
-      <th mat-header-cell *matHeaderCellDef>Updated on</th>
+      <th mat-header-cell *matHeaderCellDef class="table-headers">Updated on</th>
       <td mat-cell *matCellDef="let record"> {{ record.updatedOn | date:'medium'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="view">
-      <th mat-header-cell *matHeaderCellDef>
-        <div>
-          <form>
-            <div style="display: flex; flex-direction: row; gap: 5px;">
-            </div>
-          </form>
-        </div>
-      </th>
-      <td mat-cell *matCellDef="let record"> <button (click)="openMessage(record.id)">VIEW</button> </td>
+      <th mat-header-cell *matHeaderCellDef class="table-headers"></th>
+      <td mat-cell *matCellDef="let record"> <button (click)="openMessage(record.id)">VIEW</button>
+        <button (click)="openHistory(record.id)">HISTORY</button> </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
@@ -134,28 +142,35 @@
       Loading...
     </div> -->
 
-    <div>
-
-    </div>
-
-    <div style="display: flex;">
-      <div class="page-buttons" (click)="loadFirstPage()"><< FIRST</div>
-      <div class="page-buttons" (click)="loadPreviousPage()">< PREV</div>
-      <div class="page-number">{{currentPage + 1}} of {{totalPages}}</div>
-      <div class="page-buttons" (click)="loadNextPage()">NEXT ></div>
-      <div class="page-buttons" (click)="loadLastPage()">LAST >></div>
-    </div>
-
-    <div>
-      <div style="display: flex; justify-content: center; align-items: center;">
-        <!-- <button (click)="export(pageRadio.checked ? pageRadio.value : allRadio.value)">Export</button> -->
-        <button (click)="convertArrayToExcel()">Export</button>
+      <div>
+        <label for="">Number of records: </label>
+        <select name="" id="" [(ngModel)]="pageSize" (change)="pageSizeChange()">
+          <option value="15">15</option>
+          <option value="100">100</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
       </div>
+
+      <div style="display: flex; justify-content: center; align-items: center;">
+
+        <div class="page-buttons" (click)="loadFirstPage()"><< FIRST</div>
+        <div class="page-buttons" (click)="loadPreviousPage()">< PREV</div>
+        <div class="page-number">{{currentPage + 1}} of {{totalPages}}</div>
+        <div class="page-buttons" (click)="loadNextPage()">NEXT ></div>
+        <div class="page-buttons" (click)="loadLastPage()">LAST >></div>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <!-- <button (click)="export(pageRadio.checked ? pageRadio.value : allRadio.value)">Export</button> -->
+          <button class="page-buttons" (click)="convertArrayToExcel()">Export</button>
+        </div>
+      </div>
+
     </div>
 
-  </div>
 
-    </div>
     <div *ngIf="notFound" style="display: flex; justify-content: center;">
       {{notFoundMessage}}
     </div>
