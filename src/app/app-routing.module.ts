@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: ":id/message", component: MessageComponent },
       { path: ":id/history", component: HistoryPageComponent}
     ]
-    // , canActivate: [AuthGuard]
+    // , canActivate: [AuthGuard]git
   },
   // { path: "homeNew", component: HomeNewComponent },
   { path: "", redirectTo: "/application", pathMatch: 'full' },

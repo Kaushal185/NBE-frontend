@@ -355,6 +355,7 @@ export class HomeComponent {
     }
   }
   updateMinEndDateRange() {
+    this.toDate = "";
     if (this.fromDate) {
       const startDate = new Date(this.fromDate);
       const minEndDate = new Date(startDate);
